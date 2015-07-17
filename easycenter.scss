@@ -2,55 +2,57 @@
 
 @include global-reset;
 
-// このCSSは、簡単に中央寄せを実現するために開発したCSSソースです。
+//-------------------------------------------------------------------------------
+
+//   Name:Easy Center
+//   Developer:mit-nk
+//   version: 1.0.0
+
+//-------------------------------------------------------------------------------
+// このSCSSは、簡単に中央寄せを実現するために開発したソースです。
 
 //簡単な使用方法
-//[親セレクタ]と[子セレクタ]の２つのセレクタに、引数を渡すだけで出来ます。
+//中央寄せにする[子セレクタ]に、WidthとHeightの引数を渡すだけで実現出来ます。
 
 //[親セレクタの設定]
-//1.@include parentset(引数) この引数に親セレクタのBackGroundColorを渡します。
-//2.@extend .parentで継承します。
+//1.@extend .parentで継承します。
 
-//[子セレクタの設定]
-//1.@include childrenset(引数) この引数に中央寄せにするセレクタのWidthとHeightを渡します。
-//(初期値にborderを入れてますので、それで確認して下さい。)
+//[子セレクタの設定] 親セレクタを基準に中央寄せします。
+//1.@include childrenset(引数width,引数height) この引数に中央寄せにするセレクタのWidthとHeightを渡します。
+//(1pxのborderはサイズ確認用です。サイズが判明すれば削除して構いません。)
 //2.@extendで継承します。
 
-//Hint:Widthは過剰に長くしても、text-alignが効くので、中央になります。枠が短くて文字がはみ出すとずれます。
+//Hint!:Widthは過剰に長くしても、text-alignが効くので、中央になります。枠が短くて文字がはみ出すとずれます。
+//Hint!:heightを効かすので、親も子もDiv等Blockのセレクタを使用します。
 
 //------------------------------------------------------------------------------
 //親セレクタ設定
 
-//親セレクタのbackgroundcolor
 
-@mixin parentset($bgc) {
-    background-color: $bgc;
-}
-
-//親セレクタのextend
+//親セレクタの継承(extend)
 
 .parent { // 中央寄せするための親セレクタのextend。
+    background-color: #1CB3BC; //親の背景色
     position:relative;
     color:white;
-    height:200px; //親の高さはここで調整。親ごとに変えるならmixinに移す。
+    height:200px; //親の高さ、調整は各セレクタで行う。Defaultとして200px
     border:solid 20px lightgray; //枠線。
 }
 
 //---------------------------------------------------------------------------
 //子セレクタ設定(実際中央寄せにするセレクタ)
 
-//$box_Width  文字全体の幅を入れる。文字数の数に合わせて多くするように。borderで見ればすぐ判る。
-//$box_Height:45px;  行数や文字サイズに合わせて調整するように。
+//$box_Width  文字全体の幅を入れる(=文字枠)。文字数に合わせて多くする。1pxのborderで確認。
+//$box_Height  行数や文字サイズに合わせて調整するように。
 
 @mixin childrenset($box_Width, $box_Height){
-    //ここから中心に来るboxの調整
     width: $box_Width;
     height: $box_Height;
     margin-left: -$box_Width / 2; //Widthが自動で計算され、中央になる。
     margin-top:  -$box_Height / 2; //Heightが自動で計算され、中央になる。
 }
 
-//子セレクタのExtend
+//子セレクタの継承(Extend)
 
 .children {
     text-align: center;
@@ -61,39 +63,38 @@
 }
 
 //----------------------------------------------------------------------------
+//実際に呼び出すデモ。
 
 header { //親セレクタ
-    @include parentset(#1CB3BC); //①bgcを渡す
     @extend .parent;
     .text { //中央に寄せる子セレクタ
-        @include childrenset(250px, 45px); //②Width, Heightを渡す。
+        @include childrenset(250px, 45px); //Width, Heightを渡す。
         @extend .children;
     }
 }
-
 nav { //親セレクタ
-    @include parentset(#FF5437); //bgcを渡す
     @extend .parent;
-    .text { //中央に寄せるセレクタ
-        @include childrenset(250px, 45px); //box_Width, box_Height
+    background-color: #FF5437;
+    .text { //中央に寄せる子セレクタ
+        @include childrenset(250px, 45px); //Width, Heightを渡す。
         @extend .children;
     }
 }
 
 section { //親セレクタ
-    @include parentset(#E597F9); //bgcを渡す
     @extend .parent;
-    .text { //中央に寄せるセレクタ
-        @include childrenset(250px, 45px); //box_Width, box_Height
+    background-color: #E597F9;
+    .text { //中央に寄せる子セレクタ
+        @include childrenset(250px, 45px); //Width, Heightを渡す。
         @extend .children;
     }
 }
 
 footer { //親セレクタ
-    @include parentset(#FFEF94); //bgcを渡す
     @extend .parent;
-    .text { //中央に寄せるセレクタ
-        @include childrenset(250px, 45px); //box_Width, box_Height
+    background-color: #FFD37F;
+    .text { //中央に寄せる子セレクタ
+        @include childrenset(250px, 45px); //Width, Heightを渡す。
         @extend .children;
     }
 }
